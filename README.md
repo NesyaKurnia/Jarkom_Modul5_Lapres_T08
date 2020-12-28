@@ -4,7 +4,13 @@
 2. Agung Mulyono (05311840000035)
 
 ### A. Topologi Jaringan
+![1](./img/topologi.png)
 ### B. Menggunakan Metode VLSM
++ Pembagian Subnet <br>
+![2](./img/VLSM.png)
++ Pembagian IP <br>
+![3](./img/IP.png)
+**Catatan**: Untuk Subnet A1 menggunakan NID DMZ yaitu **10.151.83.144/29**
 ### C. Routing
 ### D. DHCP
 ### Soal no 1 :
