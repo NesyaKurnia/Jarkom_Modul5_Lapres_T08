@@ -13,6 +13,52 @@
 **Catatan**: Untuk Subnet A1 menggunakan NID DMZ yaitu **10.151.83.144/29**
 ### C. Routing
 ### D. DHCP
++ DHCP Relay
+  - Install DHCP relay pada router **BATU** dan **KEDIRI** dengan menggunakan perintah <br>`apt-get install isc-dhcp-relay`
+  - Isikan IP MOJOKERTO sebagai destinasi DHCP server
+  - Buka file konfigurasi interface pada router **BATU** dan **KEDIRI** dengan menggunakan perintah <br>`nano /etc/default/isc-dhcp-relay`
+  - router **BATU**<br> 
+    Pada bagian INTERFACES isikan eth1 eth2 <br>`INTERFACES="eth1 eth2"`
+  - router **KEDIRI**<br>
+    Pada bagian INTERFACES isikan eth0 eth2 <br> `INTERFACES="eth0 eth2"
++ DHCP Server
+  - Install DHCP server pada server **MOJOKERTO** dengan menggunakan perintah `apt-get install isc-dhcp-server`
+  - Buka file konfigurasi interface pada server **MOJOKERTO** dengan menggunakan perintah <br>`nano /etc/default/isc-dhcp-server`
+  - Pada bagian INTERFACESv4 isikan eth0 <br>`INTERFACESv4="eth0"
+  - Setelah itu edit file konfigurasi `nano /etc/dhcp/dhcpd.conf`
+  ```
+  #NID DMZ
+  subnet 10.151.83.144 netmask 255.255.255.248 {}
+  
+  #Subnet Sidoarjo
+  subnet 192.168.0.0 netmask 255.255.255.0 {
+    range 192.168.0.5 192.168.0.215;
+    option routers 192.168.0.1;
+    option broadcast-address 192.168.0.255;
+    option domain-name-servers 10.151.83.146;
+    default-lease-time 300;
+    max-lease-time 7200;
+   }
+  
+  #Subnet Gresik
+  subnet 192.168.1.0 netmask 255.255.255.0 {
+    range 192.168.1.5 192.168.1.215;
+    option routers 192.168.1.1;
+    option broadcast-address 192.168.1.255;
+    option domain-name-servers 10.151.83.146;
+    default-lease-time 300;
+    max-lease-time 7200;
+  }
+  ```
+  - Setelah itu restart DHCP server `service isc-dhcp-server restart`
++ Ubah interface pada client **GRESIK** dan **SIDOARJO**
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+```
 ### Soal no 1 :
 Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi
 SURABAYA menggunakan iptables, namun Bibah tidak ingin kalian menggunakan
