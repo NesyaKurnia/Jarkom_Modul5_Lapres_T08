@@ -11,7 +11,43 @@
 + Pembagian IP <br>
 ![3](./img/IP.png)
 **Catatan**: Untuk Subnet A1 menggunakan NID DMZ yaitu **10.151.83.144/29**
++ Interfaces<br>
+**SURABAYA (Router)**
+```
+```
+**BATU (Router)**
+```
+```
+**KEDIRI (Router)**
+```
+```
+**MALANG (DNS Server)**
+```
+```
+**MOJOKERTO (DHCP Server)**
+```
+```
+**MADIUN (Web Server)**
+```
+```
+**PROBOLINGGO (Web Server)**
+```
+```
+**GRESIK (Client)**
+```
+```
+**SIDOARJO (Client)**
+```
+```
+
 ### C. Routing
+**SURABAYA**
+```
+route add -net 192.168.0.0 netmask 255.255.255.0 gw 192.168.2.2 #Subnet SIDOARJO
+route add -net 10.151.83.144 netmask 255.255.255.248 gw 192.168.2.2 #Subnet MALANG dan MOJOKERTO
+route add -net 192.168.1.0 netmask 255.255.255.0 gw 192.168.2.6 #Subnet GRESIK
+route add -net 192.168.2.8 netmask 255.255.255.248 gw 192.168.2.6 #Subnet MADIUN dan PROBOLINGGO
+```
 ### D. DHCP
 + DHCP Relay
   - Install DHCP relay pada router **BATU** dan **KEDIRI** dengan menggunakan perintah <br>`apt-get install isc-dhcp-relay`
