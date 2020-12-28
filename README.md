@@ -3,8 +3,10 @@
 1. Kadek Nesya Kurniadewi (05311840000009)
 2. Agung Mulyono (05311840000035)
 
-### Topologi Jaringan
-### Routing Menggunakan Metode VLSM
+### A. Topologi Jaringan
+### B. Menggunakan Metode VLSM
+### C. Routing
+### D. DHCP
 ### Command IP Tables
 ```
 iptables 1
