@@ -5,6 +5,31 @@
 
 ### A. Topologi Jaringan
 ![1](./img/topologi.png)
++ Topologi.sh
+  ```
+  # Switch ada 8
+  uml_switch -unix switch1 > /dev/null < /dev/null &
+  uml_switch -unix switch2 > /dev/null < /dev/null &
+  uml_switch -unix switch3 > /dev/null < /dev/null &
+  uml_switch -unix switch4 > /dev/null < /dev/null &
+  uml_switch -unix switch5 > /dev/null < /dev/null &
+  uml_switch -unix switch6 > /dev/null < /dev/null &
+
+  # Router
+  xterm -T BATU -e linux ubd0=BATU,jarkom umid=BATU eth0=daemon,,,switch4 eth1=daemon,,,switch2 eth2=daemon,,,switch3 mem=96M &
+  xterm -T SURABAYA -e linux ubd0=SURABAYA,jarkom umid=SURABAYA eth0=tuntap,,,10.151.74.73 eth1=daemon,,,switch4 eth2=daemon,,,switch5 mem=96M &
+  xterm -T KEDIRI -e linux ubd0=KEDIRI,jarkom umid=KEDIRI eth0=daemon,,,switch5 eth1=daemon,,,switch1 eth2=daemon,,,switch6 mem=96M &
+
+  # Server
+  xterm -T MALANG -e linux ubd0=MALANG,jarkom umid=MALANG eth0=daemon,,,switch2 mem=128M &
+  xterm -T MOJOKERTO -e linux ubd0=MOJOKERTO,jarkom umid=MOJOKERTO eth0=daemon,,,switch2 mem=128M &
+  xterm -T MADIUN -e linux ubd0=MADIUN,jarkom umid=MADIUN eth0=daemon,,,switch1 mem=128M &
+  xterm -T PROBOLINGGO -e linux ubd0=PROBOLINGGO,jarkom umid=PROBOLINGGO eth0=daemon,,,switch1 mem=128M &
+
+  # Klien
+  xterm -T GRESIK -e linux ubd0=GRESIK,jarkom umid=GRESIK eth0=daemon,,,switch6 mem=96M &
+  xterm -T SIDOARJO -e linux ubd0=SIDOARJO,jarkom umid=SIDOARJO eth0=daemon,,,switch3 mem=96M &
+  ```
 ### B. Menggunakan Metode VLSM
 + Pembagian Subnet <br>
 ![2](./img/VLSM.png)
@@ -12,33 +37,129 @@
 ![3](./img/IP.png)
 **Catatan**: Untuk Subnet A1 menggunakan NID DMZ yaitu **10.151.83.144/29**
 + Interfaces<br>
-**SURABAYA (Router)**
-```
-```
-**BATU (Router)**
-```
-```
-**KEDIRI (Router)**
-```
-```
-**MALANG (DNS Server)**
-```
-```
-**MOJOKERTO (DHCP Server)**
-```
-```
-**MADIUN (Web Server)**
-```
-```
-**PROBOLINGGO (Web Server)**
-```
-```
-**GRESIK (Client)**
-```
-```
-**SIDOARJO (Client)**
-```
-```
+  **SURABAYA (Router)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 10.151.74.74
+  netmask 255.255.255.252
+  gateway 10.151.74.73
+
+  auto eth1
+  iface eth1 inet static
+  address 192.168.2.1
+  netmask 255.255.255.252
+
+  auto eth2
+  iface eth2 inet static
+  address 192.168.2.5
+  netmask 255.255.255.252
+  ```
+  **BATU (Router)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 192.168.2.2
+  netmask 255.255.255.252
+  gateway 192.168.2.1
+
+  auto eth1
+  iface eth1 inet static
+  address 10.151.83.145
+  netmask 255.255.255.248
+
+  auto eth2
+  iface eth2 inet static
+  address 192.168.0.1
+  netmask 255.255.255.0
+  ```
+  **KEDIRI (Router)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 192.168.2.6
+  netmask 255.255.255.252
+  gateway 192.168.2.5
+
+  auto eth1
+  iface eth1 inet static
+  address 192.168.2.9
+  netmask 255.255.255.248
+
+  auto eth2
+  iface eth2 inet static
+  address 192.168.1.1
+  netmask 255.255.255.0
+  ```
+  **MALANG (DNS Server)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 10.151.83.146
+  netmask 255.255.255.248
+  gateway 10.151.83.145
+  ```
+  **MOJOKERTO (DHCP Server)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 10.151.83.147
+  netmask 255.255.255.248
+  gateway 10.151.83.145
+  ```
+  **MADIUN (Web Server)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 192.168.2.10
+  netmask 255.255.255.248
+  gateway 192.168.2.9
+  ```
+  **PROBOLINGGO (Web Server)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet static
+  address 192.168.2.11
+  netmask 255.255.255.248
+  gateway 192.168.2.9
+  ```
+  **GRESIK (Client)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet dhcp
+  ```
+  **SIDOARJO (Client)**
+  ```
+  auto lo
+  iface lo inet loopback
+
+  auto eth0
+  iface eth0 inet dhcp
+  ```
 
 ### C. Routing
 **SURABAYA**
